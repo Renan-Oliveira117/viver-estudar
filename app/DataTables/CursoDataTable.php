@@ -1,8 +1,8 @@
 <?php
-
 namespace App\DataTables;
-
-use App\Curso;
+use App\Models\Curso;
+use App\Models\Professor;
+use Collective\Html\FormFacade;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -11,35 +11,46 @@ use Yajra\DataTables\Services\DataTable;
 
 class CursoDataTable extends DataTable
 {
-    /**
-     * Build DataTable class.
-     *
-     * @param mixed $query Results from query() method.
-     * @return \Yajra\DataTables\DataTableAbstract
-     */
+   
     public function dataTable($query)
     {
         return datatables()
-            ->eloquent($query)
-            ->addColumn('action', 'curso.action');
-    }
+        ->eloquent($query)
+        ->editColumn('created_at', function($curso){
 
-    /**
-     * Get query source of dataTable.
-     *
-     * @param \App\Curso $model
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
+            return $curso->created_at->format('d/m/Y');
+        })
+        ->addColumn('action', function($curso){
+
+            $acoes = link_to(
+                            route('admin.curso.edit', $curso),
+                            'Editar',
+                            ['class' => 'btn btn-sm btn-primary']
+                            );
+             $acoes .= FormFacade::button(
+                'Excluir',
+                ['class' =>
+                    'btn btn-sm btn-danger ml-1',
+                    'onclick' => "excluir('" . route('admin.curso.destroy', $curso) . "')" 
+                    ]
+            );
+            return $acoes;
+        })
+        ->editColumn('professor_id',function($curso){
+            return Professor::find($curso->professor_id)->nome;
+        })
+        ->editColumn('imagem', function ($curso) {
+            return '<img style="height: 50px;" src="' . asset('imagens/' . $curso->imagem) . '" />';
+        })
+        ->rawColumns(['action', 'imagem']);
+
+    }
+  
     public function query(Curso $model)
     {
         return $model->newQuery();
     }
-
-    /**
-     * Optional method if you want to use html builder.
-     *
-     * @return \Yajra\DataTables\Html\Builder
-     */
+ 
     public function html()
     {
         return $this->builder()
@@ -49,39 +60,31 @@ class CursoDataTable extends DataTable
                     ->dom('Bfrtip')
                     ->orderBy(1)
                     ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
+                        Button::make('create')->text('Novo'),
                         Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+                     
+                    )
+                    ->parameters([
+                        'language' => ['url'=>'//cdn.datatables.net/plug-ins/1.10.20/i18n/Portuguese-Brasil.json']
+                    ]);
     }
 
-    /**
-     * Get columns.
-     *
-     * @return array
-     */
     protected function getColumns()
     {
         return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
             Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::make('nome'),
+            Column::make('carga_horaria')->title('Carga horaria'),
+            Column::make('professor_id')->title('Professor'),
+            Column::make('imagem'),
+            Column::make('created_at')->title('Data de Criação'),
+            Column::computed('action')
+            ->exportable(false)
+            ->printable(false)
         ];
     }
 
-    /**
-     * Get filename for export.
-     *
-     * @return string
-     */
+
     protected function filename()
     {
         return 'Curso_' . date('YmdHis');

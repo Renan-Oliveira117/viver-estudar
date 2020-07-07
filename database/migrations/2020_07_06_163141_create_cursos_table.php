@@ -18,7 +18,7 @@ class CreateCursosTable extends Migration
             $table->string('nome');
             $table->string('descricao');
             $table->string('carga_horaria');
-            $table->string('imagem');
+            $table->string('imagem')->nullable();
             $table->unsignedBigInteger('professor_id');
             $table->timestamps();
 
