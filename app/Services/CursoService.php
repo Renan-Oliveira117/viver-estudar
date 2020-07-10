@@ -103,4 +103,9 @@ class CursoService
         return $imagem;
         
     }
+
+    public static function listaCursos()
+    {
+        return Curso::paginate(4);
+    }
 }
