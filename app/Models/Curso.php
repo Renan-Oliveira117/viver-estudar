@@ -8,7 +8,12 @@ class Curso extends Model
 {
     protected $guarded = ['id'];
 
-    public function professor (){
-        return $this->hasOne(Professsor::class);
+    public function professor ()
+    {
+        return $this->hasOne(Professor::class);
+    }
+    public function aluno ()
+    {
+        return $this->belongsTo(Aluno::class);
     }
 }

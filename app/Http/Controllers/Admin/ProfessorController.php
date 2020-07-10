@@ -17,6 +17,7 @@ class ProfessorController extends Controller
     {
         return view('admin.professor.form');
     }
+
     public function store(Request $request)
     {
         $professor = ProfessorService::store($request->all());
@@ -29,6 +30,7 @@ class ProfessorController extends Controller
             ->withFalha('Ocorreu erro ao salvar');
         
     }
+
     public function edit($id)
     {
         $professor = ProfessorService::getAlunoPorId($id);
@@ -40,6 +42,7 @@ class ProfessorController extends Controller
         }
         return back()->witnFalha('Ocorreu um erro ao selecionar a categoria');
     }
+
     public function update(Request $request, $id)
     {
         $professor =  ProfessorService::update($request->all(), $id);
@@ -52,6 +55,7 @@ class ProfessorController extends Controller
         return back()->withInput()
                 ->withFalha('Ocorreu um erro ao atualizar');
     }
+    
     public function destroy($id)
     {
         $professor = ProfessorService::destroy($id);

@@ -29,9 +29,9 @@
                  {!! Form::textArea('descricao',null, ['class'=>'form-control','required']) !!}
                  @error('descricao') <span class= "text-danger">{{ $message}}</span> @enderror
              </div>
-             <div class="form-group col-md-6">
+             <div class="form-group">
                  {!! Form::label('professor_id', 'Professor') !!}
-                 {!! Form::select('professor_id',$professor,  null, ['class' => 'form-control']) !!}
+                 {!! Form::select('professor_id', $professor, null, ['class' => 'form-control']) !!}
                  @error('professor_id') <span class="text-danger">{{ $message }}</span> @enderror
              </div>
              <div class="form-group col-md-6">

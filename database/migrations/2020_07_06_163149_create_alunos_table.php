@@ -20,7 +20,7 @@ class CreateAlunosTable extends Migration
             $table->string('cpf',11)->unique();
             $table->string('rg')->unique();
             $table->string('email')->unique();
-            $table->date('data_nascimento')->unique();
+            $table->date('data_nascimento');
             $table->unsignedBigInteger('curso_id');
             $table->timestamps();
             $table->foreign('curso_id')->references('id')->on('cursos');
