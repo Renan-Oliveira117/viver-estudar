@@ -12,7 +12,7 @@
                         <h5 class="card-title text-primary">Descrição</h5>
                         <h5>{{$c->descricao}}</h5>
 
-                        <a class="btn btn-primary" href="{{ route('publico.conta.index') }}">Matricular</a>
+                        <a class="btn btn-primary" href="{{ route('login') }}">Matricular</a>
                         {!! Form::hidden('curso','$c->id') !!}
                         {!!Form::close() !!}
                     </div>

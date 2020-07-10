@@ -18,7 +18,7 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
-                        <a class="nav-link text-light" href="{{ route('publico.conta.index') }}">Sua Conta</a>
+                        <a class="nav-link text-light" href="{{ route('login') }}">Sua Conta</a>
                     </li>
                 </ul>
             </div>

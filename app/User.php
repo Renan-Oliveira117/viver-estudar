@@ -8,15 +8,17 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
 
+    use Notifiable;
+    const ADMIN_USER = 1;
+    const ALUNO_USER = 0;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','tipo'
     ];
 
     /**
