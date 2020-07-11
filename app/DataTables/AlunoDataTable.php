@@ -2,7 +2,8 @@
 
 namespace App\DataTables;
 
-use App\Aluno;
+use App\Models\Aluno;
+use Collective\Html\FormFacade;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -11,77 +12,72 @@ use Yajra\DataTables\Services\DataTable;
 
 class AlunoDataTable extends DataTable
 {
-    /**
-     * Build DataTable class.
-     *
-     * @param mixed $query Results from query() method.
-     * @return \Yajra\DataTables\DataTableAbstract
-     */
+   
     public function dataTable($query)
     {
         return datatables()
-            ->eloquent($query)
-            ->addColumn('action', 'aluno.action');
+        ->eloquent($query)
+        ->editColumn('created_at', function($Aluno){
+
+            return $Aluno->created_at->format('d/m/Y');
+        })
+        ->addColumn('action', function($Aluno){
+
+            $acoes = link_to(
+                            route('admin.Aluno.edit', $Aluno),
+                            'Editar',
+                            ['class' => 'btn btn-sm btn-primary']
+                            );
+             $acoes .= FormFacade::button(
+                'Excluir',
+                ['class' =>
+                    'btn btn-sm btn-danger ml-1',
+                    'onclick' => "excluir('" . route('admin.Aluno.destroy', $Aluno) . "')" 
+                    ]
+            );
+            return $acoes;
+        });
     }
 
-    /**
-     * Get query source of dataTable.
-     *
-     * @param \App\Aluno $model
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
+   
     public function query(Aluno $model)
     {
         return $model->newQuery();
     }
 
-    /**
-     * Optional method if you want to use html builder.
-     *
-     * @return \Yajra\DataTables\Html\Builder
-     */
+
     public function html()
     {
         return $this->builder()
-                    ->setTableId('aluno-table')
+                    ->setTableId('Aluno-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->dom('Bfrtip')
                     ->orderBy(1)
                     ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
+                        Button::make('create')->text('Novo'),
                         Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+                    )
+                    ->parameters([
+                        'language' => ['url'=>'//cdn.datatables.net/plug-ins/1.10.20/i18n/Portuguese-Brasil.json']
+                    ]);
     }
 
-    /**
-     * Get columns.
-     *
-     * @return array
-     */
+ 
     protected function getColumns()
     {
         return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
             Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::make('nome'),
+            Column::make('cpf')->title('CPF'),
+            Column::make('telefone'),
+            Column::make('created_at')->title('Data de Criação'),
+            Column::computed('action')->title('Acões')
+               ->exportable(false)
+               ->printable(false),
         ];
     }
 
-    /**
-     * Get filename for export.
-     *
-     * @return string
-     */
     protected function filename()
     {
         return 'Aluno_' . date('YmdHis');
