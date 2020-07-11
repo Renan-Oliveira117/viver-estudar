@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class aluno
 {
@@ -16,7 +18,8 @@ class aluno
     public function handle($request, Closure $next)
     { 
         if(auth()->user()->tipo == 0){
-            return redirect('admin/aluno');
+           // return route('admin/aluno');
+           return Redirect::to('admin/aluno');
         }
 
         return $next($request);

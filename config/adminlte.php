@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'Viver Estudar',
+    'title' => 'Viver Para Estudar',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -240,11 +240,6 @@ return [
             'text'        => 'Professor',
             'url'         => 'admin/professor',
             'icon'        => 'fas fa-chalkboard-teacher',
-        ],
-        [
-            'text'        => 'Usuario',
-            'url'         => 'admin/usuario',
-            'icon'        => 'far fa-fw fa-user',
         ],
 
 
