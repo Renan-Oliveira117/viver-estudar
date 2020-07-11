@@ -15,6 +15,7 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 'name' => 'Renan',
+                'tipo' => '1',
                 'password' => Hash::make('admin')
             ]
             );

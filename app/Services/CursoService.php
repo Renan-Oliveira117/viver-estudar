@@ -19,14 +19,16 @@ class CursoService
             $curso->update([
                 'imagem' => self::uploadImagem($curso, $request['imagem_temp'])
             ]);
-
             DB::commit();
             return [
                 'status' => true,
                 'curso' => $curso
+
+               
             ];
             
         } catch (Exception $erro) {
+            dd($erro->getMessage());
             DB::rollBack();
             return [
                 'status' => false,
@@ -81,13 +83,12 @@ class CursoService
     {
         try {
             $curso = Curso::findOrFail($id);
-            $curso->delete();
-            return [
+             $curso->delete();
+             return [
                 'status' => true
             ];
         } catch(Exception $erro) {
-            dd($erro->getMessage());
-            return [
+             return [
                 'status' => false,
                 'erro' => $erro->getMessage()
             ];
@@ -101,5 +102,10 @@ class CursoService
 
         return $imagem;
         
+    }
+
+    public static function listaCursos()
+    {
+        return Curso::paginate(4);
     }
 }

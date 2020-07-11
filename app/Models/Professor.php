@@ -8,7 +8,8 @@ class Professor extends Model
 {
     protected $guarded = ['id'];
 
-    public function curso (){
+    public function curso ()
+    {
         return $this->belongsTo(Curso::class);
     }
 }

@@ -14,15 +14,17 @@ class CursoController extends Controller
     {
         return $cursoDataTable->render('admin.curso.index');
     }
+
     public function create()
     {
-        $professor = Professor::all()->pluck('nome');
+        $professor = Professor::all()->pluck('nome','id');
         return view('admin.curso.form', compact('professor'));
     }
+
     public function store(Request $request)
     { 
         $curso = CursoService::store($request->all());
-           
+                 
         if ($curso['status']){
           return redirect()->route('admin.curso.index')
                       ->withSucesso('Curso salvo com sucesso');
@@ -32,6 +34,7 @@ class CursoController extends Controller
                 ->withFalha('Ocorreu um erro ao salvar');
         
     }
+
     public function edit($id)
     {
         $curso = CursoService::getCursoPorId($id);
@@ -42,6 +45,7 @@ class CursoController extends Controller
             ]);
         }
     }
+
     public function update( Request $request, $id)
     {
         $curso = CursoService::update($request->all(), $id);
@@ -52,6 +56,7 @@ class CursoController extends Controller
         return back()->withInput()
           ->withFalha('Ocorreu um erro ao salvar');
     }
+
     public function destroy($id)
     {
         $curso = CursoService::destroy($id);
